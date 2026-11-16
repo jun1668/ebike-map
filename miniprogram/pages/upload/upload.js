@@ -223,15 +223,35 @@ Page({
 
   onAddImage() {
     const remain = 3 - this.data.images.length
+    if (remain <= 0) return
     wx.chooseMedia({
       count: remain,
       mediaType: ['image'],
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
       success: (res) => {
-        const paths = (res.tempFiles || []).map((f) => f.tempFilePath)
-        this.setData({ images: this.data.images.concat(paths).slice(0, 3) })
+        const paths = (res.tempFiles || []).map((f) => f.tempFilePath).slice(0, remain)
+        wx.showLoading({ title: '处理中', mask: true })
+        Promise.all(paths.map((p) => this.compressImage(p))).then((list) => {
+          wx.hideLoading()
+          this.setData({ images: this.data.images.concat(list).slice(0, 3) })
+        })
       }
+    })
+  },
+
+  // 二次压缩：微信 chooseMedia 的 compressed 只是「不传原图」，
+  // 手机拍照仍可能 500KB+，这里再压到 1080 宽 / quality 60，通常 80~150KB
+  compressImage(filePath) {
+    return new Promise((resolve) => {
+      if (!wx.compressImage) { resolve(filePath); return }
+      wx.compressImage({
+        src: filePath,
+        quality: 60,
+        compressedWidth: 1080,
+        success: (res) => resolve((res && res.tempFilePath) || filePath),
+        fail: () => resolve(filePath)
+      })
     })
   },
 
