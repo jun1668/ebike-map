@@ -145,7 +145,7 @@ Page({
   onShareAppMessage() {
     const spot = this.data.spot
     return {
-      title: spot ? spot.brandName + ' · ' + (spot.city || '共享电动车') : '附近共享电鸡',
+      title: spot ? spot.brandName + ' · ' + (spot.city || '共享电动车') : '附近共享电动车',
       path: '/pages/detail/detail?id=' + this.data.id
     }
   }
