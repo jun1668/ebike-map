@@ -1,0 +1,129 @@
+<view class="page">
+
+  <view class="intro">
+    <view class="intro-title">把你找到的车传上来</view>
+    <view class="intro-desc">下一个人到了这个城市，就不用再一个个搜了</view>
+  </view>
+
+  <view class="quick-card {{quickDone ? 'done' : ''}}">
+    <view class="quick-main">
+      <view class="quick-title">{{quickDone ? '位置已填好 ✓' : '30 秒就能传完'}}</view>
+      <view class="quick-desc">{{quickDone ? '下一步只需选品牌，然后点提交' : '点一下自动填好你的位置和省市区，你只管选品牌'}}</view>
+    </view>
+    <view class="quick-btn" bindtap="onQuickFill">{{quickBusy ? '定位中…' : (quickDone ? '重新定位' : '我就在这儿')}}</view>
+  </view>
+
+  <!-- 1 品牌 -->
+  <view class="card block">
+    <view class="label"><text class="req">*</text>是哪个品牌</view>
+    <view class="brand-grid">
+      <view
+        wx:for="{{brands}}"
+        wx:key="key"
+        class="brand-item {{activeBrand === item.key ? 'on' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onPickBrand"
+      >
+        <view class="brand-dot" style="background: {{item.color}};"></view>
+        <text class="brand-text">{{item.short}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{activeBrand === 'other'}}" class="custom-row">
+      <input
+        class="input"
+        placeholder="写品牌名，如 小鹏出行"
+        placeholder-class="ph"
+        maxlength="20"
+        value="{{customBrand}}"
+        bindinput="onCustomBrand"
+      />
+    </view>
+  </view>
+
+  <!-- 2 位置 -->
+  <view class="card block">
+    <view class="label"><text class="req">*</text>在哪儿能用</view>
+    <view class="picker-cell" bindtap="onPickLocation">
+      <view class="cell-main">
+        <view class="cell-title {{form.address ? '' : 'placeholder'}}">{{form.address || '点击定位或在地图上选点'}}</view>
+        <view wx:if="{{form.latitude}}" class="cell-sub">坐标 {{form.latitude}}, {{form.longitude}}</view>
+      </view>
+      <text class="cell-arrow">›</text>
+    </view>
+
+    <view class="region-row">
+      <text class="region-label">省市区</text>
+      <picker mode="region" value="{{region}}" bindchange="onRegionChange">
+        <view class="region-value {{region.length ? '' : 'placeholder'}}">
+          {{region.length ? regionText : '选择省 / 市 / 区'}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 3 备注 -->
+  <view class="card block">
+    <view class="label">补充说明（选填）</view>
+    <textarea
+      class="textarea"
+      placeholder="打开那个品牌的小程序，点右上角「···」，最下面「复制链接」，粘贴到这里，别人就能一键直达"
+      placeholder-class="ph"
+      maxlength="120"
+      value="{{form.remark}}"
+      bindinput="onRemarkInput"
+      auto-height
+    />
+    <view class="counter">{{form.remark.length}}/120</view>
+    <view wx:if="{{linkHint}}" class="link-hint {{linkHint.warn ? 'warn' : ''}}">
+      {{linkHint.text}}
+    </view>
+  </view>
+
+  <!-- 4 图片（选填） -->
+  <view class="card block">
+    <view class="label">现场照片（选填，最多 3 张）</view>
+    <view class="img-row">
+      <view wx:for="{{images}}" wx:key="*this" class="img-item">
+        <image class="img" src="{{item}}" mode="aspectFill" data-index="{{index}}" bindtap="onPreviewImage" />
+        <view class="img-del" data-index="{{index}}" catchtap="onRemoveImage">×</view>
+      </view>
+      <view wx:if="{{images.length < 3}}" class="img-add" bindtap="onAddImage">＋</view>
+    </view>
+  </view>
+
+  <!-- 5 直达 AppID（可选进阶） -->
+  <view class="card block">
+    <view class="label-row" bindtap="onToggleAdvanced">
+      <view class="label">小程序直达 AppID（选填）</view>
+      <text class="link">{{showAdvanced ? '收起' : '我来补'}}</text>
+    </view>
+    <view wx:if="{{showAdvanced}}" class="advanced">
+      <view class="hint">填了这个，别人点一下就能直接跳进该品牌的小程序。获取方式：打开该品牌小程序 → 右上角「…」→ 关于，即可看到 AppID。</view>
+      <input
+        class="input"
+        placeholder="wx 开头的 18 位 AppID"
+        placeholder-class="ph"
+        maxlength="32"
+        value="{{form.appId}}"
+        bindinput="onAppIdInput"
+      />
+    </view>
+  </view>
+
+  <view class="agree">
+    <checkbox-group bindchange="onAgreeChange">
+      <label class="agree-label">
+        <checkbox value="1" checked="{{agreed}}" color="#0f766e" />
+        <text>我确认信息真实，并同意公开分享给其他用户</text>
+      </label>
+    </checkbox-group>
+  </view>
+
+  <view class="submit-wrap safe-bottom">
+    <button class="btn-primary" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">
+      {{submitting ? '提交中…' : '提交'}}
+    </button>
+  </view>
+
+</view>

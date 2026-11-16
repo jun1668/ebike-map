@@ -1,0 +1,66 @@
+<view class="page" wx:if="{{spot}}">
+
+  <!-- 头部 -->
+  <view class="hero">
+    <view class="hero-badge" style="background: {{spot.badgeBg}}; color: {{spot.color}};">{{spot.short}}</view>
+    <view class="hero-main">
+      <view class="hero-name">{{spot.brandName}}</view>
+      <view class="hero-sub">{{spot.province}}{{spot.city ? ' · ' + spot.city : ''}}{{spot.district ? ' · ' + spot.district : ''}}</view>
+    </view>
+  </view>
+
+  <!-- 地图预览 -->
+  <view class="map-preview" wx:if="{{spot.location}}" bindtap="onOpenMap">
+    <map
+      class="mini-map"
+      latitude="{{spot.location.latitude}}"
+      longitude="{{spot.location.longitude}}"
+      scale="15"
+      markers="{{markers}}"
+      enable-scroll="{{false}}"
+      enable-zoom="{{false}}"
+    ></map>
+    <view class="map-mask">
+      <text class="map-btn">查看地图 / 导航</text>
+    </view>
+  </view>
+
+  <!-- 信息 -->
+  <view class="card block">
+    <view class="kv" wx:if="{{spot.address}}">
+      <text class="k">位置</text>
+      <text class="v">{{spot.address}}</text>
+    </view>
+    <view class="kv" wx:if="{{spot.remark}}">
+      <text class="k">备注</text>
+      <text class="v">{{spot.remark}}</text>
+    </view>
+    <view class="kv">
+      <text class="k">收录时间</text>
+      <text class="v">{{spot.timeText}}</text>
+    </view>
+    <view class="kv">
+      <text class="k">其他 {{spot.sameCityCount}} 人</text>
+      <text class="v">在{{spot.city || spot.province}}也上传过共享电动车</text>
+    </view>
+  </view>
+
+  <!-- 说明 -->
+  <view class="tips">
+    <text class="tip-line">· 信息由用户共建上传，运营方不保证长期有效</text>
+    <text class="tip-line">· 打开目标小程序后按页面提示扫码/租车</text>
+    <text wx:if="{{spot.openTone === 'link'}}" class="tip-line">· 有人贴了这个小程序的链接，复制后到微信里打开</text>
+    <text wx:if="{{spot.openTone === 'off'}}" class="tip-line warn">· 还没人贴过这个小程序的链接，将复制名称供微信搜索</text>
+    <text class="offline-link" bindtap="onAskRemove">这辆车已经下架了？任何人都可以删除它</text>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="footer safe-bottom">
+    <button class="btn-ghost foot-btn" bindtap="onReport">举报</button>
+    <button class="btn-primary foot-btn main" bindtap="onJump">{{spot.openTone === 'on' ? '打开 ' + spot.short + ' 小程序' : (spot.openTone === 'link' ? '复制链接' : '复制名称去搜索')}}</button>
+  </view>
+
+</view>
+
+<view class="empty" wx:elif="{{loading}}">加载中…</view>
+<view class="empty" wx:else>这条信息不存在或已下架</view>

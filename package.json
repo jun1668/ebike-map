@@ -1,0 +1,15 @@
+{
+  "name": "ebike-map",
+  "version": "0.1.0",
+  "private": true,
+  "description": "全国共享电动车地图 —— 用户共建的共享电单车小程序索引（微信小程序 + 云开发）",
+  "scripts": {
+    "check": "node scripts/validate.js",
+    "test": "node scripts/test-cloudfunctions.js",
+    "upload": "node scripts/ci-upload.js"
+  },
+  "devDependencies": {
+    "miniprogram-ci": "^2.0.14"
+  },
+  "license": "MIT"
+}

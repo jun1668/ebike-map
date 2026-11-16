@@ -1,0 +1,35 @@
+<view class="page">
+
+  <view wx:if="{{loading}}" class="state">加载中…</view>
+
+  <block wx:elif="{{empty}}">
+    <view class="empty-box">
+      <view class="empty-emoji">🗺️</view>
+      <view class="empty-title">还没有任何城市被收录</view>
+      <view class="empty-desc">成为第一个上传的人，后面来这个城市的人都会看到你这条</view>
+      <button class="btn-primary" bindtap="onGoUpload">我来上传第一个</button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="intro">去哪个城市？看这里已经收录了什么。</view>
+
+    <view wx:for="{{groups}}" wx:key="province" wx:for-item="g">
+      <view class="group-title">{{g.province}}</view>
+      <view
+        wx:for="{{g.cities}}"
+        wx:key="city"
+        class="city-row"
+        data-city="{{item.city}}"
+        bindtap="onCity"
+      >
+        <view class="city-main">
+          <view class="city-name">{{item.city}}</view>
+          <view class="city-stat">{{item.brandCount}} 个品牌 · {{item.districtCount}} 个区 · {{item.total}} 个点位</view>
+        </view>
+        <view class="arrow">›</view>
+      </view>
+    </view>
+  </block>
+
+</view>

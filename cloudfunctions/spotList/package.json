@@ -1,0 +1,9 @@
+{
+  "name": "spotList",
+  "version": "1.0.0",
+  "description": "共享电动车点位列表 / 详情查询",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

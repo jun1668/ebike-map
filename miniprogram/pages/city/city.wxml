@@ -1,0 +1,92 @@
+<view class="page">
+
+  <view wx:if="{{loading}}" class="state">加载中…</view>
+
+  <block wx:elif="{{empty}}">
+    <view class="hero">
+      <view class="hero-name">{{city}}</view>
+      <view class="hero-sub">还没有人上传过这里的共享电动车</view>
+    </view>
+
+    <view class="empty-card">
+      <view class="empty-emoji">🛵</view>
+      <view class="empty-title">你来当这个城市的第一个</view>
+      <view class="empty-desc">
+        你现在上传一条，之后来 {{city}} 的人打开小程序就能直接看到，不用再一个个品牌去试。
+        你只花 30 秒，后面每个人都能省下这 30 秒。
+      </view>
+      <button class="first-btn" bindtap="onGoUpload">上传 {{city}} 的第一个点位</button>
+
+      <view class="official-list">
+        <view class="official-title">急着用？先用这几个品牌的官方小程序找车</view>
+        <view
+          wx:for="{{official}}"
+          wx:key="name"
+          class="official-item"
+          data-name="{{item.name}}"
+          bindtap="onOfficial"
+        >
+          <text>{{item.name}}</text>
+          <text class="official-go">微信搜一下 ›</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="hero">
+      <view class="hero-name">{{city}}</view>
+      <view class="hero-sub">信息由用户共建上传</view>
+      <view class="hero-stats">
+        <view class="hero-stat">
+          <view class="hero-num">{{brandCount}}</view>
+          <view class="hero-label">个品牌</view>
+        </view>
+        <view class="hero-stat">
+          <view class="hero-num">{{districtCount}}</view>
+          <view class="hero-label">个区县</view>
+        </view>
+        <view class="hero-stat">
+          <view class="hero-num">{{total}}</view>
+          <view class="hero-label">个点位</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{allStale}}" class="stale-note">
+      这个城市的信息都超过 30 天没人确认，可能已经变化了
+    </view>
+
+    <button class="share-btn" open-type="share">
+      <text class="share-ico">↗</text>
+      <text>分享「{{city}}」给要去那儿的人</text>
+    </button>
+
+    <view class="group-title">这个城市有哪些品牌</view>
+
+    <view
+      wx:for="{{brands}}"
+      wx:key="brandName"
+      class="brand-row"
+      data-name="{{item.brandName}}"
+      data-brand="{{item.brand}}"
+      bindtap="onBrand"
+    >
+      <view class="brand-info">
+        <view class="brand-name">{{item.brandName}}</view>
+        <view class="brand-meta">
+          {{item.count}} 个点位 · {{item.timeText}}
+          <text wx:if="{{item.stale}}" class="stale-tag">可能已失效</text>
+        </view>
+      </view>
+      <view class="arrow">›</view>
+    </view>
+
+    <view class="group-title">没找到你想要的品牌？</view>
+    <view class="tip-card">
+      <view class="tip-text">有些品牌只在少数城市运营。如果你在 {{city}} 看到了没收录的车，传一条上来，下一个人就不用一个个试了。</view>
+      <button class="first-btn small" bindtap="onGoUpload">补充一个 {{city}} 的点位</button>
+    </view>
+  </block>
+
+</view>

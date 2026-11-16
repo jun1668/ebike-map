@@ -1,0 +1,146 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 180rpx;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 32rpx 28rpx;
+}
+
+.hero-badge {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.hero-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-name {
+  font-size: 36rpx;
+  font-weight: 600;
+}
+
+.hero-sub {
+  font-size: 25rpx;
+  color: var(--text-2);
+  margin-top: 8rpx;
+}
+
+.map-preview {
+  position: relative;
+  margin: 20rpx 24rpx 0;
+  border-radius: 20rpx;
+  overflow: hidden;
+  height: 320rpx;
+}
+
+.mini-map {
+  width: 100%;
+  height: 320rpx;
+}
+
+.map-mask {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+}
+
+.map-btn {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--brand);
+  font-size: 24rpx;
+  padding: 12rpx 24rpx;
+  border-radius: 999rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.12);
+}
+
+.block {
+  margin: 20rpx 24rpx 0;
+}
+
+.kv {
+  display: flex;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.kv:last-child {
+  border-bottom: none;
+}
+
+.k {
+  width: 170rpx;
+  flex-shrink: 0;
+  color: var(--text-3);
+  font-size: 25rpx;
+}
+
+.v {
+  flex: 1;
+  font-size: 26rpx;
+  color: var(--text);
+  line-height: 1.55;
+}
+
+.tips {
+  padding: 26rpx 30rpx 0;
+}
+
+.tip-line {
+  display: block;
+  font-size: 23rpx;
+  color: var(--text-3);
+  line-height: 1.9;
+}
+
+.tip-line.warn {
+  color: var(--warn);
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  gap: 20rpx;
+  padding: 20rpx 24rpx;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1rpx solid var(--line);
+}
+
+.foot-btn {
+  flex: 1;
+  height: 84rpx;
+  line-height: 84rpx;
+  font-size: 28rpx;
+  margin: 0;
+}
+
+.foot-btn.main {
+  flex: 2;
+}
+
+/* 任何人可下架 */
+.offline-link {
+  display: block;
+  margin-top: 18rpx;
+  padding: 8rpx 0;
+  font-size: 24rpx;
+  color: #9099a5;
+  text-decoration: underline;
+  text-underline-offset: 4rpx;
+}

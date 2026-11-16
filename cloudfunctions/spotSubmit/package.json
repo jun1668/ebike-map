@@ -1,0 +1,9 @@
+{
+  "name": "spotSubmit",
+  "version": "1.0.0",
+  "description": "点位提交 / 修改 / 删除，含内容安全检测与限流",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

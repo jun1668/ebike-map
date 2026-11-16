@@ -1,0 +1,67 @@
+<view class="page">
+
+  <view class="stats">
+    <view class="stat">
+      <view class="stat-num">{{stats.total}}</view>
+      <view class="stat-label">我上传的</view>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat">
+      <view class="stat-num">{{stats.cities}}</view>
+      <view class="stat-label">覆盖城市</view>
+    </view>
+    <view class="stat-divider"></view>
+    <view class="stat">
+      <view class="stat-num">{{stats.brands}}</view>
+      <view class="stat-label">涉及品牌</view>
+    </view>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">我的上传</text>
+    <text class="section-more" bindtap="onRefresh">刷新</text>
+  </view>
+
+  <block wx:if="{{list.length > 0}}">
+    <view wx:for="{{list}}" wx:key="_id" class="card item">
+      <view class="item-main" data-id="{{item._id}}" bindtap="onOpenDetail">
+        <view class="item-title">
+          <text class="item-name">{{item.brandName}}</text>
+          <text wx:if="{{item.status === 'pending'}}" class="tag tag-gray">待审核</text>
+          <text wx:elif="{{item.status === 'rejected'}}" class="tag tag-gray">未通过</text>
+        </view>
+        <view class="item-sub ellipsis">{{item.province}}{{item.city ? ' · ' + item.city : ''}}{{item.address ? ' · ' + item.address : ''}}</view>
+        <view class="item-time">{{item.timeText}}</view>
+      </view>
+      <view class="item-actions">
+        <button class="mini-btn" data-id="{{item._id}}" bindtap="onEdit">修改</button>
+        <button class="mini-btn danger" data-id="{{item._id}}" bindtap="onDelete">删除</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:elif="{{loading}}" class="empty">加载中…</view>
+
+  <view wx:else class="empty-block">
+    <view class="empty-emoji">📍</view>
+    <view class="empty-title">还没有上传记录</view>
+    <view class="empty-desc">你上传的每一条，都能让下一个人少走弯路</view>
+    <button class="btn-primary empty-btn" bindtap="onGoUpload">去上传</button>
+  </view>
+
+  <view class="menu">
+    <view class="menu-item" bindtap="onAbout">
+      <text>关于这个小程序</text>
+      <text class="cell-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onAgreement">
+      <text>用户协议与免责声明</text>
+      <text class="cell-arrow">›</text>
+    </view>
+    <button class="menu-item menu-btn" open-type="feedback">
+      <text>意见反馈</text>
+      <text class="cell-arrow">›</text>
+    </button>
+  </view>
+
+</view>

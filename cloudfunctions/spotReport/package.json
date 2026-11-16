@@ -1,0 +1,9 @@
+{
+  "name": "spotReport",
+  "version": "1.0.0",
+  "description": "举报失效 / 错误点位，达到阈值自动下架",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

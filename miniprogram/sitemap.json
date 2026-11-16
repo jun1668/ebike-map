@@ -1,0 +1,23 @@
+{
+  "desc": "允许微信索引公开的搜索页，个人中心与上传页不索引",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/index/index"
+    },
+    {
+      "action": "allow",
+      "page": "pages/detail/detail",
+      "params": ["id"],
+      "matching": "exact"
+    },
+    {
+      "action": "disallow",
+      "page": "pages/upload/upload"
+    },
+    {
+      "action": "disallow",
+      "page": "pages/mine/mine"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+.page {
+  min-height: 100vh;
+  background: #f5f6f7;
+  padding: 20rpx 24rpx 40rpx;
+  box-sizing: border-box;
+}
+
+.state {
+  text-align: center;
+  color: #9099a5;
+  font-size: 27rpx;
+  padding: 120rpx 0;
+}
+
+.intro {
+  font-size: 25rpx;
+  color: #9099a5;
+  padding: 4rpx 8rpx 20rpx;
+  line-height: 1.6;
+}
+
+.group-title {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: #5b6472;
+  padding: 20rpx 8rpx 14rpx;
+}
+
+.city-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 26rpx;
+  margin-bottom: 14rpx;
+  box-shadow: 0 2rpx 6rpx rgba(16, 24, 40, 0.04);
+}
+
+.city-row:active {
+  opacity: 0.7;
+}
+
+.city-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.city-stat {
+  font-size: 24rpx;
+  color: #9099a5;
+  margin-top: 6rpx;
+}
+
+.arrow {
+  color: #c3c9d2;
+  font-size: 32rpx;
+}
+
+.empty-box {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 70rpx 40rpx;
+  text-align: center;
+  margin-top: 60rpx;
+}
+
+.empty-emoji {
+  font-size: 68rpx;
+}
+
+.empty-title {
+  font-size: 31rpx;
+  font-weight: 600;
+  margin-top: 20rpx;
+  color: #1f2937;
+}
+
+.empty-desc {
+  font-size: 25rpx;
+  color: #9099a5;
+  margin-top: 14rpx;
+  line-height: 1.65;
+}
+
+.btn-primary {
+  margin-top: 34rpx;
+  background: #0f766e;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  border-radius: 22rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+}

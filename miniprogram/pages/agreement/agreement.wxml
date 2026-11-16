@@ -1,0 +1,42 @@
+<view class="page">
+
+  <view class="card block">
+    <view class="h">一、这是什么</view>
+    <view class="p">「{{appName}}」是一个由用户共同维护的共享电动车投放点信息查询工具。它不提供车辆租赁、押金、支付、开锁等任何交易服务，也不代表任何共享电动车品牌。</view>
+    <view class="p">实际用车请打开对应品牌自己的小程序，按其页面提示操作。交易关系、费用、售后均由该品牌与你之间直接形成。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">二、内容由用户上传</view>
+    <view class="p">本小程序内的品牌、位置、备注、照片等信息均由用户主动上传，平台不对其真实性、准确性、时效性作出承诺或保证。</view>
+    <view class="p">车辆可能随时被调度、收回、停运，你看到的点位仅供参考。跨城市可用性以该品牌小程序内实际显示为准。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">三、你会看到的内容管理措施</view>
+    <view class="p">1. 所有上传内容提交时会经微信内容安全接口检测，违规内容不予收录。</view>
+    <view class="p">2. 每条信息都提供「举报」入口，同一信息被多人举报后会隐藏并转人工复核。</view>
+    <view class="p">3. 任何用户发现车辆已下架，都可以直接标记删除，删除即时生效。</view>
+    <view class="p">4. 我们保留对违规内容直接下架、对恶意上传账号限制使用的权利。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">四、你上传时应当遵守</view>
+    <view class="p">不得上传违法违规、侵犯他人权益、广告引流、与共享电动车无关的内容；不得上传他人隐私信息（如清晰人脸、车牌、门牌）；不得虚假标注位置。</view>
+    <view class="p">上传即表示你同意上述信息在本小程序内公开可见，并供其他用户查询。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">五、位置信息的用途</view>
+    <view class="p">位置权限仅用于两件事：你主动点击定位时展示附近已收录的点位；你上传时在地图上选点确认。本小程序不在后台持续获取位置，不记录你的移动轨迹，不向第三方出售位置数据。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">六、申诉与联系</view>
+    <view class="p">如果你认为某条信息侵犯了你的权益（例如误标了你门店的位置），或你希望删除自己上传的内容，可在详情页点「举报」说明情况，或通过下方「意见反馈」联系我们，我们会在收到后尽快处理。</view>
+    <button class="feedback-btn" open-type="feedback">意见反馈</button>
+  </view>
+
+  <view class="version">{{version}} · 更新于 {{updatedAt}}</view>
+
+</view>

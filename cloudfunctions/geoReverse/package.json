@@ -1,0 +1,9 @@
+{
+  "name": "geoReverse",
+  "version": "1.0.0",
+  "description": "经纬度逆地理转城市名（可选，需腾讯位置服务 Key）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

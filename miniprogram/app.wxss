@@ -1,0 +1,226 @@
+page {
+  --brand: #0f766e;
+  --brand-light: #14b8a6;
+  --brand-bg: #e6f4f1;
+  --text: #1f2328;
+  --text-2: #61676e;
+  --text-3: #9aa0a6;
+  --line: #ebedf0;
+  --bg: #f5f6f7;
+  --card: #ffffff;
+  --warn: #f59e0b;
+  --danger: #e5484d;
+
+  background: var(--bg);
+  color: var(--text);
+  font-size: 28rpx;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+view, text, input, textarea, button, scroll-view {
+  box-sizing: border-box;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 20rpx;
+  padding: 24rpx;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.muted {
+  color: var(--text-3);
+}
+
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* 主按钮 */
+.btn-primary {
+  background: var(--brand);
+  color: #fff;
+  border-radius: 999rpx;
+  font-size: 30rpx;
+  line-height: 88rpx;
+  height: 88rpx;
+  text-align: center;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-primary[disabled] {
+  background: #b9c6c4;
+  color: #fff;
+}
+
+.btn-ghost {
+  background: var(--brand-bg);
+  color: var(--brand);
+  border-radius: 999rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.btn-ghost::after {
+  border: none;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  line-height: 32rpx;
+  background: var(--brand-bg);
+  color: var(--brand);
+}
+
+.tag-gray,
+.tag-off {
+  background: #f2f3f5;
+  color: var(--text-2);
+}
+
+/* 有链接但要在微信里粘贴打开 */
+.tag-link {
+  background: #e8f0fb;
+  color: #2b6cb0;
+}
+
+.empty {
+  padding: 120rpx 40rpx;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 26rpx;
+}
+
+.safe-bottom {
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+}
+
+/* 列表里可直接点的链接标签 */
+.tag-tap:active {
+  opacity: 0.6;
+}
+
+/* ===== 首页：分段区右侧入口 ===== */
+.seg-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.city-entry {
+  font-size: 23rpx;
+  color: #0f766e;
+  font-weight: 600;
+  background: #e6f4f1;
+  padding: 7rpx 16rpx;
+  border-radius: 30rpx;
+}
+
+.city-entry:active {
+  opacity: 0.6;
+}
+
+/* ===== 数据新鲜度 ===== */
+.spot-stale {
+  opacity: 0.72;
+}
+
+.tag-stale {
+  background: #fff4e5;
+  color: #b25e09;
+}
+
+.stale-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16rpx;
+  padding: 14rpx 20rpx;
+  border-radius: 16rpx;
+  background: #fff8ef;
+}
+
+.stale-text {
+  font-size: 24rpx;
+  color: #8a5a12;
+}
+
+.stale-btn {
+  padding: 7rpx 24rpx;
+  border-radius: 30rpx;
+  background: #fff;
+  color: #b25e09;
+  font-weight: 600;
+  font-size: 24rpx;
+  border: 1rpx solid #f0cf9e;
+}
+
+.stale-btn:active {
+  opacity: 0.6;
+}
+
+/* ===== 空态补充 ===== */
+.empty-extra {
+  margin-top: 22rpx;
+  font-size: 26rpx;
+  color: #0f766e;
+  font-weight: 600;
+}
+
+.official-list {
+  margin-top: 44rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 26rpx;
+  text-align: left;
+}
+
+.official-title {
+  font-size: 24rpx;
+  color: #9099a5;
+  margin-bottom: 6rpx;
+}
+
+.official-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 0;
+  border-top: 1rpx solid #eef0f3;
+  font-size: 27rpx;
+  color: #1f2937;
+}
+
+.official-go {
+  font-size: 24rpx;
+  color: #0f766e;
+  font-weight: 600;
+}

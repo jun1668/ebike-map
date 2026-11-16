@@ -1,0 +1,43 @@
+<view class="page">
+
+  <view class="head">
+    <view class="logo">🛵</view>
+    <view class="head-name">全国共享电动车</view>
+    <view class="head-desc">一个由用户共建的共享电动车小程序导航</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">怎么用</view>
+    <view class="p">1. 到陌生城市，打开「附近」，授权定位即可看到周边已被收录的共享电动车品牌。</view>
+    <view class="p">2. 也可以直接选省份 / 城市，或切到地图看分布。</view>
+    <view class="p">3. 找到的车上没有收录？点「上传」，把品牌和位置传上来，下一个人就不用盲找了。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">为什么有些品牌点不开</view>
+    <view class="p">小程序之间互相跳转，必须拿到对方的小程序 AppID。品牌官方 AppID 不由第三方统一分发，需要一个一个核对录入。</view>
+    <view class="p">没录入的品牌会走「复制名称 → 微信搜索」的降级路径。你在上传时可以顺手补上 AppID，之后所有人就能一键直达。</view>
+    <view class="p dim">获取方式：打开该品牌小程序 → 右上角「…」→ 关于，即可看到 AppID（wx 开头 18 位）。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">数据说明</view>
+    <view class="p">所有投放点信息由用户上传，运营方只做内容安全与基本核对，不保证每个点位长期有效。共享电动车多为分城市运营，跨城可用性以该品牌小程序内实际显示为准。</view>
+    <view class="p">发现信息失效、位置错误或无关内容，可在详情页点「举报」，累计举报达到阈值会自动下架待复核。</view>
+  </view>
+
+  <view class="card block">
+    <view class="h">联系我们</view>
+    <view class="p">使用问题、内容申诉、合作补充品牌 AppID，都可以通过下方反馈入口联系。</view>
+    <button class="feedback-btn" open-type="feedback">意见反馈</button>
+  </view>
+
+  <view class="card block">
+    <view class="h">规则与声明</view>
+    <view class="p">使用本小程序前，建议先看一下用户协议与免责声明，里面写清了内容由谁提供、平台能做什么和不能做什么。</view>
+    <view class="agree-link" bindtap="onAgreement">用户协议与免责声明 ›</view>
+  </view>
+
+  <view class="version">v{{version}}</view>
+
+</view>

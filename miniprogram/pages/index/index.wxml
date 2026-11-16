@@ -1,0 +1,170 @@
+<view class="page">
+
+  <!-- 顶部工具区 -->
+  <view class="toolbar">
+    <view class="loc-bar" bindtap="onTapLocate">
+      <view class="loc-left">
+        <text class="loc-dot {{location ? 'on' : ''}}">◎</text>
+        <text class="loc-text ellipsis">{{locText}}</text>
+      </view>
+      <text class="loc-action">{{locating ? '定位中…' : '重新定位'}}</text>
+    </view>
+
+    <view class="search-row">
+      <view class="search-box">
+        <text class="search-ico">⌕</text>
+        <input
+          class="search-input"
+          placeholder="搜品牌 / 城市，如 哈啰"
+          placeholder-class="ph"
+          value="{{keyword}}"
+          confirm-type="search"
+          bindinput="onKeywordInput"
+          bindconfirm="onSearch"
+        />
+        <text wx:if="{{keyword}}" class="search-clear" catchtap="onClearKeyword">×</text>
+      </view>
+      <picker mode="selector" range="{{provinceOptions}}" value="{{provinceIndex}}" bindchange="onProvinceChange">
+        <view class="filter-chip {{provinceIndex > 0 ? 'active' : ''}}">
+          {{provinceIndex > 0 ? provinceShort : '省份'}} <text class="caret">▾</text>
+        </view>
+      </picker>
+    </view>
+
+    <scroll-view class="brand-scroll" scroll-x enable-flex show-scrollbar="{{false}}">
+      <view class="brand-chip {{activeBrand === '' ? 'active' : ''}}" data-key="" bindtap="onBrandTap">全部</view>
+      <view
+        wx:for="{{brands}}"
+        wx:key="key"
+        class="brand-chip {{activeBrand === item.key ? 'active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onBrandTap"
+      >{{item.short}}</view>
+    </scroll-view>
+  </view>
+
+  <!-- 视图切换 -->
+  <view class="seg">
+    <view class="seg-group">
+      <view class="seg-item {{view === 'list' ? 'on' : ''}}" data-v="list" bindtap="onSwitchView">列表</view>
+      <view class="seg-item {{view === 'map' ? 'on' : ''}}" data-v="map" bindtap="onSwitchView">地图</view>
+    </view>
+    <view class="seg-right">
+      <text class="seg-count">{{total}}{{unit}}</text>
+      <text class="city-entry" bindtap="onGoCities">按城市找 ›</text>
+    </view>
+  </view>
+
+  <!-- 列表视图 -->
+  <scroll-view
+    wx:if="{{view === 'list'}}"
+    class="list"
+    scroll-y
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+    lower-threshold="150"
+  >
+    <block wx:if="{{list.length > 0}}">
+      <view
+        wx:for="{{list}}"
+        wx:key="_id"
+        class="spot-card {{item.stale ? 'spot-stale' : ''}}"
+        data-id="{{item._id}}"
+        bindtap="onOpenDetail"
+        bindlongpress="onLongPress"
+      >
+        <view class="spot-head">
+          <view class="brand-badge" style="background: {{item.badgeBg}}; color: {{item.color}};">{{item.short}}</view>
+          <view class="spot-main">
+            <view class="spot-title">
+              <text class="spot-name ellipsis">{{item.brandName}}</text>
+              <text wx:if="{{item.distanceText}}" class="spot-dist">{{item.distanceText}}</text>
+            </view>
+            <view class="spot-sub ellipsis">{{item.city}}{{item.district ? ' · ' + item.district : ''}}{{item.address ? ' · ' + item.address : ''}}</view>
+          </view>
+          <text class="more-btn" data-id="{{item._id}}" catchtap="onMoreTap">⋯</text>
+        </view>
+        <view wx:if="{{item.remark}}" class="spot-remark ellipsis-2">{{item.remark}}</view>
+        <view class="spot-foot">
+          <text class="tag tag-{{item.openTone}} {{item.openTone === 'off' ? '' : 'tag-tap'}}" data-id="{{item._id}}" catchtap="onJumpTag">{{item.openText}}</text>
+          <text wx:if="{{item.stale}}" class="tag tag-stale">可能已失效</text>
+          <text class="spot-time">{{item.timeText}}</text>
+        </view>
+        <view wx:if="{{item.stale}}" class="stale-bar">
+          <text class="stale-text">30 天没人确认了，还开着吗？</text>
+          <text class="stale-btn" data-id="{{item._id}}" catchtap="onConfirmAlive">还在</text>
+        </view>
+      </view>
+
+      <view class="list-end">{{hasMore ? '上拉加载更多' : '没有更多了'}}</view>
+    </block>
+
+    <view wx:elif="{{loading}}" class="empty">正在加载…</view>
+
+    <view wx:else class="empty-block">
+      <view class="empty-emoji">🛵</view>
+      <view class="empty-title">{{emptyTitle}}</view>
+      <view class="empty-desc">{{emptyDesc}}</view>
+      <button class="btn-primary empty-btn" bindtap="onGoUpload">我来上传第一个</button>
+      <view class="empty-extra" bindtap="onGoCities">看看别的城市 ›</view>
+
+      <view class="official-list">
+        <view class="official-title">急着用？先用这几个品牌的官方小程序找车</view>
+        <view
+          wx:for="{{officialBrands}}"
+          wx:key="name"
+          class="official-item"
+          data-name="{{item.name}}"
+          bindtap="onSearchOfficial"
+        >
+          <text>{{item.name}}</text>
+          <text class="official-go">微信搜一下 ›</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 地图视图 -->
+  <view wx:else class="map-wrap">
+    <map
+      id="mainMap"
+      class="map"
+      latitude="{{mapLat}}"
+      longitude="{{mapLng}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      show-location
+      enable-3D="{{false}}"
+      enable-rotate="{{false}}"
+      bindmarkertap="onMarkerTap"
+      bindcallouttap="onMarkerTap"
+      bindregionchange="onRegionChange"
+    ></map>
+
+    <view class="map-actions">
+      <view class="map-fab" bindtap="onTapLocate">◎</view>
+      <view class="map-fab" bindtap="onZoomIn">＋</view>
+      <view class="map-fab" bindtap="onZoomOut">－</view>
+    </view>
+
+    <view wx:if="{{markers.length === 0 && !loading}}" class="map-tip">当前视野内还没有收录，可以拖动地图或换个省份</view>
+
+    <view wx:if="{{selected}}" class="sheet">
+      <view class="sheet-head">
+        <view class="brand-badge" style="background: {{selected.badgeBg}}; color: {{selected.color}};">{{selected.short}}</view>
+        <view class="spot-main">
+          <view class="spot-title"><text class="spot-name ellipsis">{{selected.brandName}}</text></view>
+          <view class="spot-sub ellipsis">{{selected.city}}{{selected.address ? ' · ' + selected.address : ''}}</view>
+        </view>
+        <text class="sheet-close" bindtap="onCloseSheet">×</text>
+      </view>
+      <view class="sheet-btns">
+        <button class="btn-ghost sheet-btn" data-id="{{selected._id}}" bindtap="onOpenDetail">详情</button>
+        <button class="btn-primary sheet-btn" data-id="{{selected._id}}" bindtap="onJumpFromSheet">{{selected.openTone === 'on' ? '打开小程序' : (selected.openTone === 'link' ? '复制链接' : '复制名称')}}</button>
+      </view>
+    </view>
+  </view>
+
+</view>
