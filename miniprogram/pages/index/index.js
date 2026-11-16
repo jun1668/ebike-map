@@ -437,7 +437,7 @@ Page({
       }
     }
     return {
-      title: '附近共享电动车在哪？这张地图是大家一起画的',
+      title: '附近电驴在哪？这张地图是大家一起画的',
       path: '/pages/index/index'
     }
   },
@@ -450,7 +450,7 @@ Page({
         query: `city=${encodeURIComponent(city)}`
       }
     }
-    return { title: '附近共享电动车地图 · 用户共建' }
+    return { title: '附近电驴地图 · 用户共建' }
   },
 
   /** 列表里如果全是同一个城市，就把它作为分享落点 */

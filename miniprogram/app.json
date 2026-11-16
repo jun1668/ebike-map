@@ -12,7 +12,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#0f766e",
-    "navigationBarTitleText": "附近共享电动车",
+    "navigationBarTitleText": "附近电驴",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f5f6f7"
   },

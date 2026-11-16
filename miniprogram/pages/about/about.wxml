@@ -2,7 +2,7 @@
 
   <view class="head">
     <view class="logo">🛵</view>
-    <view class="head-name">附近共享电动车</view>
+    <view class="head-name">附近电驴</view>
     <view class="head-desc">一个由用户共建的共享电动车小程序导航</view>
   </view>
 
