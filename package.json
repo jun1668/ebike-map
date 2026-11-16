@@ -2,7 +2,7 @@
   "name": "ebike-map",
   "version": "0.1.0",
   "private": true,
-  "description": "全国共享电动车地图 —— 用户共建的共享电单车小程序索引（微信小程序 + 云开发）",
+  "description": "附近共享电鸡地图 —— 用户共建的共享电单车小程序索引（微信小程序 + 云开发）",
   "scripts": {
     "check": "node scripts/validate.js",
     "test": "node scripts/test-cloudfunctions.js",

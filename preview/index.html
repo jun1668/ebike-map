@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
-<title>全国共享电动车 · 效果预览</title>
+<title>附近共享电鸡 · 效果预览</title>
 <style>
 :root{
   --brand:#0f766e; --brand-2:#14b8a6; --brand-bg:#e6f4f1;
@@ -494,7 +494,7 @@ textarea::placeholder{color:var(--text-3)}
 
   <header class="nav">
     <div class="nav-back hide" id="navBack" onclick="goBack()">‹</div>
-    <div class="nav-title" id="navTitle">全国共享电动车</div>
+    <div class="nav-title" id="navTitle">附近共享电鸡</div>
   </header>
 
   <div class="stage">
@@ -664,7 +664,7 @@ textarea::placeholder{color:var(--text-3)}
       <div class="about-scroll">
         <div class="about-head">
           <div class="about-logo">🛵</div>
-          <div class="about-name">全国共享电动车</div>
+          <div class="about-name">附近共享电鸡</div>
           <div class="about-desc">一个由用户共建的共享电动车小程序导航</div>
         </div>
 
@@ -702,7 +702,7 @@ textarea::placeholder{color:var(--text-3)}
       <div class="about-scroll">
         <div class="card" style="margin-bottom:10px">
           <div class="about-h">一、这是什么</div>
-          <div class="about-p">「全国共享电动车」是一个由用户共同维护的共享电动车投放点信息查询工具。它不提供车辆租赁、押金、支付、开锁等任何交易服务，也不代表任何共享电动车品牌。</div>
+          <div class="about-p">「附近共享电鸡」是一个由用户共同维护的共享电动车投放点信息查询工具。它不提供车辆租赁、押金、支付、开锁等任何交易服务，也不代表任何共享电动车品牌。</div>
           <div class="about-p">实际用车请打开对应品牌自己的小程序，按其页面提示操作。交易关系、费用、售后均由该品牌与你之间直接形成。</div>
         </div>
 
@@ -1417,7 +1417,7 @@ function allCities(){
 
 function openCities(){
   renderCityIndex();
-  state.history.push({view:'home', title:'全国共享电动车'});
+  state.history.push({view:'home', title:'附近共享电鸡'});
   showView('cities', '按城市找');
 }
 
@@ -1625,7 +1625,7 @@ function delSpot(id){
 function showView(name, title){
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   $('view-' + name).classList.add('active');
-  $('navTitle').textContent = title || '全国共享电动车';
+  $('navTitle').textContent = title || '附近共享电鸡';
   const isTab = ['home','upload','mine'].includes(name);
   $('tabbar').classList.toggle('hide', !isTab);
   $('navBack').classList.toggle('hide', isTab);
@@ -1636,7 +1636,7 @@ function showView(name, title){
 function switchTab(tab){
   state.tab = tab;
   if (tab === 'mine') renderMine();
-  showView(tab, tab === 'home' ? '全国共享电动车' : (tab === 'upload' ? '上传共享电动车' : '我的'));
+  showView(tab, tab === 'home' ? '附近共享电鸡' : (tab === 'upload' ? '上传共享电动车' : '我的'));
 }
 
 function openAbout(){
@@ -1646,7 +1646,7 @@ function openAbout(){
 
 function goBack(){
   const prev = state.history.pop();
-  if (prev){ showView(prev.view, prev.title || '全国共享电动车'); return; }
+  if (prev){ showView(prev.view, prev.title || '附近共享电鸡'); return; }
   switchTab('home');
 }
 

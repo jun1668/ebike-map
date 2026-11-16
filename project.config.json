@@ -1,5 +1,5 @@
 {
-  "description": "全国共享电动车 - 用户共建的小程序导航地图",
+  "description": "附近共享电鸡 - 用户共建的小程序导航地图",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
