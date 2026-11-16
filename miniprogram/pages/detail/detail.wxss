@@ -144,3 +144,25 @@
   text-decoration: underline;
   text-underline-offset: 4rpx;
 }
+
+/* 现场照片 */
+.photo-title {
+  font-size: 27rpx;
+  color: #6b7480;
+  margin-bottom: 16rpx;
+}
+.photo-list {
+  display: flex;
+  gap: 12rpx;
+}
+.photo {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 16rpx;
+  background: #f2f4f6;
+}
+.photo-tip {
+  margin-top: 14rpx;
+  font-size: 23rpx;
+  color: #a0a8b3;
+}

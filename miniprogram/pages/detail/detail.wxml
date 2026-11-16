@@ -45,6 +45,23 @@
     </view>
   </view>
 
+  <!-- 现场照片 -->
+  <view class="card block" wx:if="{{spot.images && spot.images.length}}">
+    <view class="photo-title">现场照片（{{spot.images.length}} 张）</view>
+    <view class="photo-list">
+      <image
+        wx:for="{{spot.images}}"
+        wx:key="*this"
+        src="{{item}}"
+        mode="aspectFill"
+        class="photo"
+        data-index="{{index}}"
+        bindtap="onPreviewPhoto"
+      />
+    </view>
+    <view class="photo-tip">拍摄于上传当天，只能说明当时有车</view>
+  </view>
+
   <!-- 说明 -->
   <view class="tips">
     <text class="tip-line">· 信息由用户共建上传，运营方不保证长期有效</text>

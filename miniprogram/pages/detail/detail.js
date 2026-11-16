@@ -96,6 +96,13 @@ Page({
     linkUtil.openSpot(spot, brandsUtil.findBrand(spot.brand))
   },
 
+  onPreviewPhoto(e) {
+    const list = (this.data.spot && this.data.spot.images) || []
+    if (!list.length) return
+    const index = Number(e.currentTarget.dataset.index) || 0
+    wx.previewImage({ current: list[index], urls: list })
+  },
+
   onReport() {
     const spot = this.data.spot
     if (!spot) return
