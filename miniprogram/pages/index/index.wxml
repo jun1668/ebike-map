@@ -79,6 +79,7 @@
           <view class="brand-badge" style="background: {{item.badgeBg}}; color: {{item.color}};">{{item.short}}</view>
           <view class="spot-main">
             <view class="spot-title">
+              <text wx:if="{{item.isFav}}" class="fav-mark">★</text>
               <text class="spot-name ellipsis">{{item.brandName}}</text>
               <text wx:if="{{item.distanceText}}" class="spot-dist">{{item.distanceText}}</text>
             </view>

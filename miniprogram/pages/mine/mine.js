@@ -7,13 +7,20 @@ const app = getApp()
 
 Page({
   data: {
+    tab: 'mine',
     list: [],
-    stats: { total: 0, cities: 0, brands: 0 },
-    loading: true
+    favList: [],
+    stats: { total: 0, fav: 0, cities: 0, brands: 0 },
+    loading: true,
+    favLoading: true
   },
 
   onShow() {
     this.load()
+  },
+
+  onTab(e) {
+    this.setData({ tab: e.currentTarget.dataset.tab })
   },
 
   onRefresh() {
@@ -36,11 +43,11 @@ Page({
         })
         this.setData({
           list: rows,
-          stats: {
+          stats: Object.assign({}, this.data.stats, {
             total: rows.length,
             cities: Object.keys(cities).length,
             brands: Object.keys(brands).length
-          },
+          }),
           loading: false
         })
       })
@@ -48,6 +55,61 @@ Page({
         this.setData({ loading: false })
         cloud.toastError(err)
       })
+    this.loadFav()
+  },
+
+  /** 我的收藏：存的是收藏时的快照，原点位被删也能看到（标灰） */
+  loadFav() {
+    this.setData({ favLoading: true })
+    cloud.call('spotFav', { action: 'list' })
+      .then((data) => {
+        const rows = (data.list || []).map((f) => Object.assign({}, f, {
+          brandName: f.brandName || brandsUtil.brandName(f.brand),
+          short: (f.brandName || '其他').slice(0, 2),
+          timeText: fmt.timeAgo(f.createdAt),
+          where: [f.city, f.district].filter(Boolean).join(' · ')
+        }))
+        this.setData({
+          favList: rows,
+          stats: Object.assign({}, this.data.stats, { fav: rows.length }),
+          favLoading: false
+        })
+      })
+      .catch((err) => {
+        this.setData({ favLoading: false })
+        if (err && err.code === 'NO_COLLECTION') return
+        cloud.toastError(err)
+      })
+  },
+
+  onOpenFav(e) {
+    const spotId = e.currentTarget.dataset.spotid
+    const alive = e.currentTarget.dataset.alive
+    if (!alive) {
+      wx.showModal({
+        title: '这条已经失效了',
+        content: '它在列表里已经被下架或删除。要把它从收藏里去掉吗？',
+        confirmText: '去掉',
+        success: (res) => {
+          if (res.confirm) this.unfav(spotId)
+        }
+      })
+      return
+    }
+    wx.navigateTo({ url: '/pages/detail/detail?id=' + spotId })
+  },
+
+  onUnfav(e) {
+    this.unfav(e.currentTarget.dataset.spotid)
+  },
+
+  unfav(spotId) {
+    cloud.call('spotFav', { action: 'toggle', spotId })
+      .then(() => {
+        wx.showToast({ title: '已取消收藏', icon: 'none' })
+        this.loadFav()
+      })
+      .catch(cloud.toastError)
   },
 
   onOpenDetail(e) {

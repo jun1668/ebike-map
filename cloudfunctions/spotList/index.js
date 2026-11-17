@@ -34,6 +34,31 @@ function normalize(doc) {
 }
 
 
+/**
+ * 给列表打上「我收藏过」标记。
+ * 单独一次查询（按 openid 取全部收藏 id），比每个点位查一次便宜得多。
+ * favorites 集合不存在时静默跳过，不影响列表本身。
+ */
+async function markFavorites(list, openid) {
+  if (!openid || !list.length) return list
+  let ids = []
+  try {
+    const res = await db.collection('favorites')
+      .where({ _openid: openid })
+      .field({ spotId: true })
+      .limit(500)
+      .get()
+    ids = (res.data || []).map((r) => r.spotId)
+  } catch (err) {
+    return list
+  }
+  if (!ids.length) return list
+  const set = {}
+  ids.forEach((id) => { set[id] = true })
+  list.forEach((item) => { item.isFav = !!set[item._id] })
+  return list
+}
+
 /** 把一批点位聚合成「城市索引」：每城品牌数 / 区数 / 点位数 */
 function buildCityIndex(rows) {
   const map = {}
@@ -106,6 +131,7 @@ function buildCityDetail(rows, city) {
 
 exports.main = async (event) => {
   const payload = event || {}
+  const ctx = cloud.getWXContext()
 
   try {
     /* ---------- 城市索引：所有已收录城市 ---------- */
@@ -237,6 +263,9 @@ exports.main = async (event) => {
     } catch (e) {
       // geoNear 场景下 count 可能不被支持，退回估算值
     }
+
+    const openid = ctx.OPENID
+    await markFavorites(list, openid)
 
     return ok({ list, total, hasMore })
   } catch (err) {

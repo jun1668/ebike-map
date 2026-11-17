@@ -378,3 +378,11 @@
   line-height: 1;
   flex-shrink: 0;
 }
+
+/* 已收藏星标 */
+.fav-mark {
+  font-size: 24rpx;
+  color: #f5a623;
+  margin-right: 8rpx;
+  line-height: 1;
+}

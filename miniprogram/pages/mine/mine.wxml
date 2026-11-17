@@ -7,16 +7,22 @@
     </view>
     <view class="stat-divider"></view>
     <view class="stat">
-      <view class="stat-num">{{stats.cities}}</view>
-      <view class="stat-label">覆盖城市</view>
+      <view class="stat-num">{{stats.fav}}</view>
+      <view class="stat-label">我收藏的</view>
     </view>
     <view class="stat-divider"></view>
     <view class="stat">
-      <view class="stat-num">{{stats.brands}}</view>
-      <view class="stat-label">涉及品牌</view>
+      <view class="stat-num">{{stats.cities}}</view>
+      <view class="stat-label">覆盖城市</view>
     </view>
   </view>
 
+  <view class="mine-seg">
+    <view class="mine-seg-item {{tab === 'mine' ? 'on' : ''}}" data-tab="mine" bindtap="onTab">我上传的</view>
+    <view class="mine-seg-item {{tab === 'fav' ? 'on' : ''}}" data-tab="fav" bindtap="onTab">我收藏的</view>
+  </view>
+
+  <block wx:if="{{tab === 'mine'}}">
   <view class="section-head">
     <text class="section-title">我的上传</text>
     <text class="section-more" bindtap="onRefresh">刷新</text>
@@ -48,6 +54,43 @@
     <view class="empty-desc">你上传的每一条，都能让下一个人少走弯路</view>
     <button class="btn-primary empty-btn" bindtap="onGoUpload">去上传</button>
   </view>
+  </block>
+
+  <block wx:else>
+    <view class="section-head">
+      <text class="section-title">我收藏的</text>
+      <text class="section-more" bindtap="onRefresh">刷新</text>
+    </view>
+
+    <block wx:if="{{favList.length > 0}}">
+      <view wx:for="{{favList}}" wx:key="_id" class="card item {{item.alive ? '' : 'item-dead'}}">
+        <view
+          class="item-main"
+          data-spotid="{{item.spotId}}"
+          data-alive="{{item.alive}}"
+          bindtap="onOpenFav"
+        >
+          <view class="item-title">
+            <text class="item-name">{{item.brandName}}</text>
+            <text wx:if="{{!item.alive}}" class="tag tag-gray">已失效</text>
+          </view>
+          <view class="item-sub ellipsis">{{item.where}}{{item.address ? ' · ' + item.address : ''}}</view>
+          <view class="item-time">收藏于 {{item.timeText}}</view>
+        </view>
+        <view class="item-actions">
+          <button class="mini-btn" data-spotid="{{item.spotId}}" bindtap="onUnfav">取消收藏</button>
+        </view>
+      </view>
+    </block>
+
+    <view wx:elif="{{favLoading}}" class="empty">加载中…</view>
+
+    <view wx:else class="empty-block">
+      <view class="empty-emoji">⭐</view>
+      <view class="empty-title">还没有收藏</view>
+      <view class="empty-desc">在列表里点卡片右上角的「⋯」，就能把它收起来，下次直接找</view>
+    </view>
+  </block>
 
   <view class="menu">
     <view class="menu-item" bindtap="onAbout">

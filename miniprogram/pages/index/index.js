@@ -318,7 +318,8 @@ Page({
       distanceText: fmt.distance(distance),
       timeText: fmt.timeAgo(spot.updatedAt || spot.createdAt),
       days: days,
-      stale: days >= STALE_DAYS
+      stale: days >= STALE_DAYS,
+      isFav: !!spot.isFav
     })
   },
 
@@ -416,13 +417,15 @@ Page({
     const id = e.currentTarget.dataset.id
     const spot = this.data.list.find((s) => s._id === id)
     if (!spot) return
+    const favText = spot && spot.isFav ? '取消收藏' : '收藏这条'
     wx.showActionSheet({
-      itemList: ['还能用，我来确认一下', '已经下架了，删除这条', '复制品牌名', '举报这条信息'],
+      itemList: [favText, '还能用，我来确认一下', '已经下架了，删除这条', '复制品牌名', '举报这条信息'],
       success: (res) => {
-        if (res.tapIndex === 0) this.confirmAlive(spot._id)
-        if (res.tapIndex === 1) this.askRemove(spot._id)
-        if (res.tapIndex === 2) fmt.copy(spot.brandName, '已复制品牌名')
-        if (res.tapIndex === 3) this.report(spot._id)
+        if (res.tapIndex === 0) this.toggleFav(spot._id)
+        if (res.tapIndex === 1) this.confirmAlive(spot._id)
+        if (res.tapIndex === 2) this.askRemove(spot._id)
+        if (res.tapIndex === 3) fmt.copy(spot.brandName, '已复制品牌名')
+        if (res.tapIndex === 4) this.report(spot._id)
       }
     })
   },
@@ -471,17 +474,54 @@ Page({
 
   /** 卡片右上角的「⋯」：任何人都能确认可用或下架 */
   onMoreTap(e) {
-    const id = e.currentTarget.dataset.id
+    this.showSpotMenu(e.currentTarget.dataset.id)
+  },
+
+  /** 卡片菜单：收藏 / 确认 / 下架 / 举报 */
+  showSpotMenu(id) {
     const spot = this.findSpot(id)
     if (!spot) return
+    const favText = spot.isFav ? '取消收藏' : '收藏这条'
     wx.showActionSheet({
-      itemList: ['还能用，我来确认一下', '已经下架了，删除这条', '举报这条信息'],
+      itemList: [favText, '还能用，我来确认一下', '已经下架了，删除这条', '举报这条信息'],
       success: (res) => {
-        if (res.tapIndex === 0) this.confirmAlive(id)
-        if (res.tapIndex === 1) this.askRemove(id)
-        if (res.tapIndex === 2) this.report(id)
+        if (res.tapIndex === 0) this.toggleFav(id)
+        if (res.tapIndex === 1) this.confirmAlive(id)
+        if (res.tapIndex === 2) this.askRemove(id)
+        if (res.tapIndex === 3) this.report(id)
       }
     })
+  },
+
+  /** 收藏 / 取消收藏，先把界面改掉再等云端，感觉更快 */
+  toggleFav(id) {
+    const spot = this.findSpot(id)
+    if (!spot) return
+    const next = !spot.isFav
+    this.applyFav(id, next)
+    cloud.call('spotFav', { action: 'toggle', spotId: id })
+      .then((data) => {
+        const fav = data && typeof data.fav === 'boolean' ? data.fav : next
+        this.applyFav(id, fav)
+        wx.showToast({
+          title: fav ? '已收藏，去「我的」看' : '已取消收藏',
+          icon: 'none'
+        })
+      })
+      .catch((err) => {
+        this.applyFav(id, !next)
+        cloud.toastError(err)
+      })
+  },
+
+  applyFav(id, fav) {
+    const list = this.data.list.map((s) => (s._id === id ? Object.assign({}, s, { isFav: fav }) : s))
+    const patch = { list }
+    if (this.data.selected && this.data.selected._id === id) {
+      patch.selected = Object.assign({}, this.data.selected, { isFav: fav })
+    }
+    this.setData(patch)
+    if (this.data.mode === 'map') this.syncMarkers()
   },
 
   findSpot(id) {

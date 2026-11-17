@@ -47,7 +47,7 @@ miniprogram/pages/cities    按城市找（城市索引）
 miniprogram/pages/city      城市详情（品牌 / 区县 / 点位数聚合）
 miniprogram/utils           config / cloud / location / brands / province / format / link
 .github/workflows           CI：自查 + 自动上传体验版
-cloudfunctions/             spotList spotSubmit spotReport spotMine spotInit geoReverse
+cloudfunctions/             spotList spotSubmit spotReport spotMine spotFav spotInit geoReverse
 docs/                       需求规则 / 技术架构 / 部署上线 / 运营维护
 ```
 
