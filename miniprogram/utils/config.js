@@ -4,7 +4,7 @@
  */
 module.exports = {
   // 云开发环境 ID，例如 'ebike-map-3g9k2x'
-  cloudEnv: 'YOUR_CLOUD_ENV_ID',
+  cloudEnv: 'junge-d5glgeh8v153d36db',
 
   // 列表每页条数
   pageSize: 15,
