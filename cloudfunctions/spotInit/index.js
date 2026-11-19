@@ -31,14 +31,18 @@ const SEED = [
 ]
 
 async function init() {
-  try {
-    await db.createCollection(SPOTS)
-    return ok({ message: '集合 spots 创建成功' })
-  } catch (err) {
-    const msg = (err && err.errMsg) || ''
-    if (/exist/i.test(msg)) return ok({ message: '集合已存在，跳过' })
-    throw err
+  const results = []
+  for (const name of [SPOTS, 'favorites']) {
+    try {
+      await db.createCollection(name)
+      results.push(name + ' 创建成功')
+    } catch (err) {
+      const msg = (err && err.errMsg) || ''
+      if (/exist/i.test(msg)) results.push(name + ' 已存在，跳过')
+      else throw err
+    }
   }
+  return ok({ message: results.join('；') })
 }
 
 async function seed() {
