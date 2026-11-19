@@ -11,6 +11,8 @@ module.exports = {
 
   // 附近搜索半径（米）
   defaultRadius: 30000,
+  // 只有模糊定位时用的半径：模糊定位误差约 5km，半径太小会筛不到东西
+  fuzzyRadius: 60000,
   maxRadius: 200000,
 
   // 举报下架阈值、限流条数都在云函数里：cloudfunctions/spotReport、spotSubmit

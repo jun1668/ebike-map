@@ -95,7 +95,11 @@ Page({
           'form.address': this.data.form.address || '当前位置附近'
         })
         this.fillRegionByGeo(location.latitude, location.longitude)
-        wx.showToast({ title: '位置已填好，选个品牌就能提交', icon: 'none', duration: 2400 })
+        if (location.precise === false) {
+          wx.showToast({ title: '这里只是大概位置，建议点地图选精确点', icon: 'none', duration: 3000 })
+        } else {
+          wx.showToast({ title: '位置已填好，选个品牌就能提交', icon: 'none', duration: 2400 })
+        }
       })
       .catch((err) => {
         this.setData({ quickBusy: false })
@@ -122,7 +126,10 @@ Page({
           'form.longitude': location.longitude,
           'form.address': this.data.form.address || '当前位置附近'
         })
-        wx.showToast({ title: '已获取当前位置', icon: 'none' })
+        wx.showToast({
+          title: location.precise === false ? '已获取大概位置，建议再点地图微调' : '已获取当前位置',
+          icon: 'none'
+        })
         this.fillRegionByGeo(location.latitude, location.longitude)
       })
       .catch((err) => {

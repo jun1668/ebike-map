@@ -84,13 +84,15 @@ Page({
   /* ------------------ 定位 ------------------ */
 
   applyLocation(location, moveMap) {
+    const precise = !location || location.precise !== false
     const patch = {
       location,
-      locText: '已定位 · 附近',
+      locText: precise ? '已定位 · 附近' : '大致位置 · 附近',
+      locFuzzy: !precise,
       mapLat: location.latitude,
       mapLng: location.longitude
     }
-    if (moveMap) patch.scale = 13
+    if (moveMap) patch.scale = precise ? 13 : 11
     this.setData(patch)
   },
 
@@ -121,6 +123,8 @@ Page({
           })
         } else if (err && err.code === 'PRIVACY_DENIED') {
           wx.showToast({ title: '需先同意隐私协议', icon: 'none' })
+        } else if (err && err.code === 'NO_LOCATION') {
+          wx.showToast({ title: '定位暂不可用，可按省份查找', icon: 'none' })
         } else {
           wx.showToast({ title: '定位失败，可手动选省份查找', icon: 'none' })
         }
@@ -207,7 +211,9 @@ Page({
     if (location) {
       payload.latitude = location.latitude
       payload.longitude = location.longitude
-      if (!payload.province) payload.radius = CONFIG.defaultRadius
+      if (!payload.province) {
+        payload.radius = location.precise === false ? CONFIG.fuzzyRadius : CONFIG.defaultRadius
+      }
     }
 
     this.setData({ loading: true })
@@ -293,7 +299,8 @@ Page({
 
     let distance = spot.distance
     const location = this.data.location
-    if ((distance === undefined || distance === null) && location && spot.location) {
+    if ((distance === undefined || distance === null) && location && spot.location
+      && location.precise !== false) {
       distance = fmt.haversine(location.latitude, location.longitude, spot.location.latitude, spot.location.longitude)
     }
 
