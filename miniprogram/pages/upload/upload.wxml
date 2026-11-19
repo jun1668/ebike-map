@@ -120,6 +120,39 @@
     </checkbox-group>
   </view>
 
+  <!-- 内置地图选点（chooseLocation 无权限时的兜底） -->
+  <view wx:if="{{mapOpen}}" class="map-mask">
+    <view class="map-panel">
+      <view class="map-head">
+        <text class="map-title">在地图上点一下位置</text>
+        <text class="map-close" bindtap="onMapCancel">✕</text>
+      </view>
+      <map
+        class="pick-map"
+        latitude="{{mapLat}}"
+        longitude="{{mapLng}}"
+        scale="16"
+        show-location="{{false}}"
+        bindtap="onMapTap"
+      ></map>
+      <view class="map-tip {{mapPicked ? 'done' : ''}}">
+        {{mapPicked ? '已选：' + mapLat + ', ' + mapLng : '拖动地图到你的位置，然后点一下'}}
+      </view>
+      <input
+        class="map-addr"
+        placeholder="补充地址，如：科技园地铁站 A 出口"
+        placeholder-class="ph"
+        maxlength="40"
+        value="{{mapAddr}}"
+        bindinput="onMapAddr"
+      />
+      <view class="map-actions">
+        <button class="btn-ghost" bindtap="onMapCancel">取消</button>
+        <button class="btn-primary map-ok" bindtap="onMapConfirm">就选这儿</button>
+      </view>
+    </view>
+  </view>
+
   <view class="submit-wrap safe-bottom">
     <button class="btn-primary" loading="{{submitting}}" disabled="{{submitting}}" bindtap="onSubmit">
       {{submitting ? '提交中…' : '提交'}}

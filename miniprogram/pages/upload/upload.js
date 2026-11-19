@@ -23,7 +23,12 @@ Page({
     agreed: false,
     submitting: false,
     quickDone: false,
-    quickBusy: false
+    quickBusy: false,
+    mapOpen: false,
+    mapPicked: false,
+    mapLat: 22.5405,
+    mapLng: 113.9545,
+    mapAddr: ''
   },
 
   onShow() {
@@ -160,8 +165,53 @@ Page({
       })
       .catch((err) => {
         if (err && err.code === 'CHOOSE_CANCELLED') return
-        wx.showToast({ title: '选点失败', icon: 'none' })
+        // chooseLocation 未获批（工具类目常见）→ 降级到内置地图自选点
+        this.openInnerMap()
       })
+  },
+
+  /** 没有 chooseLocation 权限时，用 <map> 组件让用户自己点一下 */
+  openInnerMap() {
+    const f = this.data.form
+    const loc = app.globalData.location || {}
+    this.setData({
+      mapOpen: true,
+      mapPicked: false,
+      mapLat: f.latitude || loc.latitude || 22.5405,
+      mapLng: f.longitude || loc.longitude || 113.9545,
+      mapAddr: f.address || ''
+    })
+  },
+
+  onMapTap(e) {
+    this.setData({
+      mapLat: e.detail.latitude,
+      mapLng: e.detail.longitude,
+      mapPicked: true
+    })
+  },
+
+  onMapAddr(e) {
+    this.setData({ mapAddr: e.detail.value })
+  },
+
+  onMapCancel() {
+    this.setData({ mapOpen: false })
+  },
+
+  onMapConfirm() {
+    if (!this.data.mapPicked) {
+      wx.showToast({ title: '先在地图上点一下位置', icon: 'none' })
+      return
+    }
+    const addr = (this.data.mapAddr || '').trim()
+    this.setData({
+      mapOpen: false,
+      'form.latitude': this.data.mapLat,
+      'form.longitude': this.data.mapLng,
+      'form.address': addr || '地图选点'
+    })
+    if (addr) this.fillRegionByAddress(addr)
   },
 
   /** 地址文字能认出省市区就顺手填上，认不出就留给用户自己选 */
