@@ -1,0 +1,9 @@
+{
+  "name": "spotFav",
+  "version": "1.0.0",
+  "description": "收藏点位：添加 / 取消 / 列表",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
