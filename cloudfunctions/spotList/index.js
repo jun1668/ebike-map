@@ -6,6 +6,8 @@ const db = cloud.database()
 const _ = db.command
 const SPOTS = 'spots'
 const PAGE_MAX = 50
+/* 附近查询在内存里算距离，一次最多扫这么多条，够用又不至于把云函数拖慢 */
+const GEO_SCAN_MAX = 500
 
 function ok(data) {
   return { ok: true, data }
@@ -217,51 +219,55 @@ exports.main = async (event) => {
       ]))
     }
 
-    // geoNear 与关键词检索组合会失效，有关键词时退回普通查询
+    // 不用 geoNear：它要求 location 字段上建了 2dsphere 索引，
+    // 没建索引时整页会直接空掉（本项目就是这种情况）。
+    // 改成「按条件取一批 -> 内存算距离过滤 -> 排序分页」，点位量级小的时候完全够用。
     const useGeo = hasGeo && !province && !keyword
-    if (useGeo) {
-      conds.push({
-        location: _.geoNear({
-          geometry: db.Geo.Point(longitude, latitude),
-          maxDistance: radius,
-          minDistance: 0
-        })
-      })
-    }
-
     const where = conds.length === 1 ? conds[0] : _.and(conds)
 
-    let query = db.collection(SPOTS).where(where)
-    if (!useGeo) {
-      query = query.orderBy('updatedAt', 'desc')
-    }
+    let list = []
+    let total = 0
+    let hasMore = false
 
-    const res = await query.skip(page * pageSize).limit(pageSize + 1).get()
-    const rows = res.data || []
-    const hasMore = rows.length > pageSize
-    const list = rows.slice(0, pageSize).map(normalize)
-
-    // geoNear 不返回距离，这里顺手算出来，省一次前端循环
     if (useGeo) {
+      const res = await db.collection(SPOTS)
+        .where(where)
+        .orderBy('updatedAt', 'desc')
+        .limit(GEO_SCAN_MAX)
+        .get()
+      const scanned = (res.data || []).map(normalize)
       const R = 6371000
       const rad = (d) => (d * Math.PI) / 180
-      list.forEach((item) => {
-        if (!item.location) return
+      const within = scanned.filter((item) => {
+        if (!item.location) return false
         const dLat = rad(item.location.latitude - latitude)
         const dLng = rad(item.location.longitude - longitude)
         const a = Math.sin(dLat / 2) ** 2 +
           Math.cos(rad(latitude)) * Math.cos(rad(item.location.latitude)) * Math.sin(dLng / 2) ** 2
         item.distance = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+        return item.distance <= radius
       })
-      list.sort((a, b) => (a.distance || 0) - (b.distance || 0))
-    }
-
-    let total = list.length + page * pageSize
-    try {
-      const c = await db.collection(SPOTS).where(where).count()
-      total = c.total
-    } catch (e) {
-      // geoNear 场景下 count 可能不被支持，退回估算值
+      within.sort((a, b) => a.distance - b.distance)
+      total = within.length
+      list = within.slice(page * pageSize, page * pageSize + pageSize)
+      hasMore = within.length > (page + 1) * pageSize
+    } else {
+      const res = await db.collection(SPOTS)
+        .where(where)
+        .orderBy('updatedAt', 'desc')
+        .skip(page * pageSize)
+        .limit(pageSize + 1)
+        .get()
+      const rows = res.data || []
+      hasMore = rows.length > pageSize
+      list = rows.slice(0, pageSize).map(normalize)
+      total = list.length + page * pageSize
+      try {
+        const c = await db.collection(SPOTS).where(where).count()
+        total = c.total
+      } catch (e) {
+        // count 失败就用估算值
+      }
     }
 
     const openid = ctx.OPENID
