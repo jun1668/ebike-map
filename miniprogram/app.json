@@ -42,7 +42,7 @@
     }
   },
   "requiredPrivateInfos": [
-    "getLocation",
+    "getFuzzyLocation",
     "chooseLocation"
   ],
   "__usePrivacyCheck__": true,
